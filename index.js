@@ -26,7 +26,8 @@ const newDetalies = (newDetaliesData) => {
         .then(res => res.json())
         .then(data => dataalldetalies(data.data))
 
-
+   
+   document.getElementById("placeholderInput").value=`${newDetaliesData} items found for category Entertainment`
 
 }
 const dataalldetalies = (dataalldetalies) => {
