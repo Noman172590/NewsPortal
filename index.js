@@ -19,11 +19,11 @@ const displaydataCatagory = (data) => {
     
     `
         ulCatagory.appendChild(li)
-      
+
     })
 }
 
-const AllDatashow=(data)=>{
+const AllDatashow = (data) => {
     console.log(data);
     fetch(`https://openapi.programming-hero.com/api/news/category/${data}`)
         .then(res => res.json())
@@ -33,9 +33,9 @@ const AllDatashow=(data)=>{
 
 }
 
-const datashow=(datashowall)=>{
+const datashow = (datashowall) => {
     const sectionthree = document.getElementById("sectionthree")
-    sectionthree.innerHTML=""
+    sectionthree.innerHTML = ""
     const div = document.createElement("div")
 
     console.log(datashowall);
@@ -67,7 +67,7 @@ const datashow=(datashowall)=>{
                 </div>
                 <div>
                     <i class="fa-regular fa-eye"></i>${data.total_view
-                    }
+            }
 
                 </div>
                 <div>
@@ -78,7 +78,10 @@ const datashow=(datashowall)=>{
                     <i class="fa-solid fa-star"></i>
 
                 </div>
-                <button type="button" class="btn btn-success fs-4 "><i class="fa-brands fa-telegram me-2 fs-4 "></i>See
+                <button 
+                onclick="myFunction('${data._id}')"
+                type="button" class="btn btn-success fs-4 "
+                data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-brands fa-telegram me-2 fs-4 "></i>See
                     Details</button>
             </div>
             </div>
@@ -93,33 +96,33 @@ const datashow=(datashowall)=>{
         sectionthree.appendChild(div)
     })
 }
-     
+
 const newDetalies = (newDetaliesData) => {
     console.log(newDetaliesData);
     fetch(`https://openapi.programming-hero.com/api/news/category/0${newDetaliesData}`)
         .then(res => res.json())
         .then(data => dataalldetalies(data.data))
 
-   
- 
+
+
 
 }
 const dataalldetalies = (dataalldetalies) => {
     console.log(dataalldetalies);
-  
+
     fetch("https://openapi.programming-hero.com/api/news/categories")
-    .then(res => res.json())
-    .then(data => placeholdersetting(data.data.news_category))
+        .then(res => res.json())
+        .then(data => placeholdersetting(data.data.news_category))
 
-   const placeholdersetting=(datashowplacehoder)=>{
-   
-    document.getElementById("placeholderInput").value=`${dataalldetalies.length} items found  `
+    const placeholdersetting = (datashowplacehoder) => {
 
-   }
+        document.getElementById("placeholderInput").value = `${dataalldetalies.length} items found  `
 
-   
+    }
+
+
     const sectionthree = document.getElementById("sectionthree")
-    sectionthree.innerHTML=""
+    sectionthree.innerHTML = ""
     const div = document.createElement("div")
 
     console.log(dataalldetalies);
@@ -151,7 +154,7 @@ const dataalldetalies = (dataalldetalies) => {
                 </div>
                 <div>
                     <i class="fa-regular fa-eye"></i>${data.total_view
-                    }
+            }
 
                 </div>
                 <div>
@@ -162,10 +165,14 @@ const dataalldetalies = (dataalldetalies) => {
                     <i class="fa-solid fa-star"></i>
 
                 </div>
+                <div>
                 <button 
-                onclick="dataModel(${data._id})" 
-                type="button" class="btn btn-success fs-4 "><i class="fa-brands fa-telegram me-2 fs-4 "></i>See
+                onclick="myFunction('${data._id}')"
+                type="button" class="btn btn-success fs-4 "
+                data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-brands fa-telegram me-2 fs-4 "></i>See
                     Details</button>
+                </div>
+                
             </div>
             </div>
         </div>
@@ -179,17 +186,41 @@ const dataalldetalies = (dataalldetalies) => {
         sectionthree.appendChild(div)
     }
 
-    
-  
-)
+
+
+    )
 
 
 
 }
-const dataModel=(data)=>{
+function myFunction(data) {
     console.log(data);
-  }
+    fetch(`https://openapi.programming-hero.com/api/news/${data}`)
+    .then(res=>res.json())
+    .then(data=>singleModelshow(data.data[0]))
+}
 
-
+const singleModelshow=(data)=>{
+        console.log(data);
+        const exampleModal=document.getElementById("exampleModal")
+        const div=document.createElement("div")
+        div.classList.add("modal-dialog")
+        div.innerHTML=`
+        
+        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">${data.title}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ${data.details}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn  btn-outline-success" data-bs-dismiss="modal">Close</button>
+                            
+                        </div>
+                    </div>`
+                    exampleModal.appendChild(div)    
+}
 
 newCatagory()
