@@ -1,1 +1,1 @@
-# live link: https://newsportalshow.netlify.app/
+# page link: https://newsportalshow.netlify.app/
