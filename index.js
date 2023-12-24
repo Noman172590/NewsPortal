@@ -1,43 +1,58 @@
-function newCatagory() {
-    fetch("https://openapi.programming-hero.com/api/news/categories")
+function newCatagory(categories,number) {
+    console.log(categories);
+    fetch(`https://openapi.programming-hero.com/api/news/${categories}`)
         .then(res => res.json())
-        .then(data => displaydataCatagory(data.data.news_category))
+        .then(data => displaydataCatagory(data.data.news_category,number))
 
 }
 
-const displaydataCatagory = (data) => {
-    console.log(data);
-    AllDatashow(data[7].category_id)
+const displaydataCatagory = (data,number) => {
+    console.log(data,number);
+    AllDatashow(data[7].category_id,number)
     const ulCatagory = document.getElementById("ulCatagory")
-    data.map(datas => {
-        const li = document.createElement("li")
-        li.classList.add("nav-item")
-        li.innerHTML = `
     
-    <button
-     onclick="newDetalies(${datas.category_id})" type="button" class="btn btn-secondary me-2 ">${datas.category_id}. ${datas.category_name} </button>
+    if(!number){
+        data.map(datas => {
+            const li = document.createElement("li")
+            li.classList.add("nav-item")
+            li.innerHTML = `
+        
+        <button
+         onclick="newDetalies(${datas.category_id})" type="button" class="btn btn-secondary me-2 ">${datas.category_id}. ${datas.category_name} </button>
+        
+        `
+            ulCatagory.appendChild(li)
     
-    `
-        ulCatagory.appendChild(li)
-
-    })
+        })
+    }
 }
 
-const AllDatashow = (data) => {
+const AllDatashow = (data,number) => {
     console.log(data);
     fetch(`https://openapi.programming-hero.com/api/news/category/${data}`)
         .then(res => res.json())
-        .then(data => datashow(data.data))
+        .then(data => datashow(data.data,number))
 
 
 
 }
 
-const datashow = (datashowall) => {
+const datashow = (datashowall,number) => {
+    console.log(number);
     const sectionthree = document.getElementById("sectionthree")
     sectionthree.innerHTML = ""
     const div = document.createElement("div")
-
+    const showAllButtonid=document.getElementById("showAllButtonid")
+      if(number && datashowall.length>2)
+      {
+        
+        showAllButtonid.classList.add("d-none")
+        
+      }
+      else{
+        datashowall=datashowall.slice(0,2)
+        showAllButtonid.classList.remove("d-none")
+      }
     console.log(datashowall);
     datashowall.map(data => {
         console.log(data)
@@ -110,21 +125,27 @@ const newDetalies = (newDetaliesData) => {
 const dataalldetalies = (dataalldetalies) => {
     console.log(dataalldetalies);
 
-    fetch("https://openapi.programming-hero.com/api/news/categories")
-        .then(res => res.json())
-        .then(data => placeholdersetting(data.data.news_category))
-
-    const placeholdersetting = (datashowplacehoder) => {
+    
 
         document.getElementById("placeholderInput").value = `${dataalldetalies.length} items found  `
 
-    }
+    
 
-
+    
     const sectionthree = document.getElementById("sectionthree")
     sectionthree.innerHTML = ""
     const div = document.createElement("div")
+    const showAllButtonid=document.getElementById("showAllButtonid")
+      if(dataalldetalies.length>2)
+      {
+        dataalldetalies=dataalldetalies.slice(0,2)
+        showAllButtonid.classList.remove("d-none")
+      }
+    
+      
+        
 
+    
     console.log(dataalldetalies);
     dataalldetalies.map(data => {
         console.log(data)
@@ -135,7 +156,7 @@ const dataalldetalies = (dataalldetalies) => {
         <div class="col-md-4 p-3 ">
             <img src=${data.image_url} class="img-fluid rounded " alt="...">
         </div>
-        <div class="col-md-8 mt-5">
+        <div class="col-md-8 mt-2">
             <div class="card-body">
                 <h5 class="card-title">${data.title}</h5>
                 <p class="card-text">${data.details}</p>
@@ -223,4 +244,10 @@ const singleModelshow=(data)=>{
                     exampleModal.appendChild(div)    
 }
 
-newCatagory()
+document.getElementById("showallbutton").addEventListener("click",function(){
+    const number=10
+    newCatagory("categories",number)
+
+})
+
+newCatagory("categories")
